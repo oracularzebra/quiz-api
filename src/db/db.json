@@ -1,0 +1,29 @@
+{
+    "users":
+        [
+            {
+            "first":{
+                "username":"Onion",
+                "password":"orange",
+                "attempts":{
+                    "I":{
+                        "obtained_marks":4,
+                        "topic":"General Knowledge",
+                        "difficulty":"medium",
+                        "date":"2nd October 2023"
+                    },"III":{
+                        "obtained_marks":4,
+                        "topic":"General Knowledge",
+                        "difficulty":"medium",
+                        "date":"2nd October 2023"
+                    },"II":{
+                        "obtained_marks":4,
+                        "topic":"General Knowledge",
+                        "difficulty":"medium",
+                        "date":"2nd October 2023"
+                    }
+                }
+            }
+            }
+        ]
+}
