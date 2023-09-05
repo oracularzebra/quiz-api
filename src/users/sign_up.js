@@ -1,5 +1,5 @@
 const fs = require('fs');
-const pool = require('./pg');
+const pool = require('../pg');
 
 module.exports = {
 

@@ -1,6 +1,6 @@
 const express = require("express");
-const { CreateNewUser } = require("./sign_up");
-const authorize_user = require('./sign_in').AuthorizeUser;
+const { CreateNewUser } = require("./users/sign_up");
+const authorize_user = require('./users/sign_in').AuthorizeUser;
 
 const app = express();
 const port = 9001;
@@ -12,7 +12,7 @@ app.listen(port, ()=>{
     console.log(`Host is listening on port ${port}`);
 });
 
-app.get('/sign-in', async(req, res)=>{
+app.post('/sign-in', async(req, res)=>{
 
     if(Object.keys(req.query).length == 0 ||
         req.query.username == undefined ||
@@ -22,16 +22,15 @@ app.get('/sign-in', async(req, res)=>{
     const pass = req.query.password.toString().trim();
 
     if(username.length == 0 || username.includes(' ')){
-        res.send("Please enter correct Username");
+        res.send({success:true,message:"Please enter correct Username"});
     }
     else{
         const result = await authorize_user(username, pass);
-        res.send(result[1]);
+        res.send({success:false,message:result[1]});
     }
-
 });
 
-app.get('/sign-up', (req, res)=>{
+app.post('/sign-up', (req, res)=>{
 
     if(Object.keys(req.query).lenght == 0) res.send('Please enter username and password');
     
@@ -40,7 +39,9 @@ app.get('/sign-up', (req, res)=>{
 
     CreateNewUser(username, password)
         .then(result => {
-            result?res.send('Please login using newly created username and password'): res.send('Username already existed');
+            result?
+                res.send({success:true,message:'Please login using newly created username and password'}): 
+                res.send({success:true,message:'Username already existed'});
         });
 })
 app.get('*', (req, res)=>{
