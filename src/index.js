@@ -42,7 +42,6 @@ app.get('/sign-up', (req, res)=>{
         .then(result => {
             result?res.send('Please login using newly created username and password'): res.send('Username already existed');
         });
-
 })
 app.get('*', (req, res)=>{
     res.status(404).send("Page Not Exist");
