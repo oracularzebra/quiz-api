@@ -1,55 +1,18 @@
 const fs = require('fs');
+const pool = require('./pg');
 
-const CheckIfUserAlreadyExists = (username) =>{
-    const usernameFile = fs.readFileSync('./db/usersDB.json', {encoding:'utf-8', flag:'r'});
+module.exports = {
 
-    const usernames = JSON.parse(usernameFile);
+    CreateNewUser: async(username, password) => {
 
-    return usernames.includes(username);
-};
-
-const addNewUser = (username, password) => {
-
-    try{
-        //Adding username in usernames file
-        const usernameFile = fs.readFileSync('./db/usersDB.json', {encoding:'utf-8', flag:'r'});
-
-        const usernames = JSON.parse(usernameFile);
-
-        usernames.push(username);
-
-        const newUsersList = JSON.stringify(usernames);
-
-        fs.writeFileSync('./db/usersDB.json', newUsersList);
-
-        //Adding uesrname and password in Us_pass.db file
-        const usrenameDBFile = fs.readFileSync('./db/Us_pass.json', {encoding:'utf-8', flag:'r'});
-
-        const usernameDB = JSON.parse(usrenameDBFile);
-
-        const newUserObj = {
-            username: username,
-            password: password
-        };
-
-        usernameDB.push(newUserObj);
-
-        const newUsersDB = JSON.stringify(usernameDB);
-        fs.writeFileSync('./db/Us_pass.json', newUsersDB);
+    const queryRes = await pool.query(`select username from users where username='${username}'`)
+    
+    if(queryRes.rows.length == 0){
+        const res = pool.query(`insert into users (username, password) values ('${username}', '${password}')`)
         return true;
     }
-    catch(E){return false}
-
-}
-module.exports = {
-    
-    CreateNewUser: (username, password)=>{
-        
-        if(!CheckIfUserAlreadyExists(username)){
-            return addNewUser(username, password);
-        }
-        else{
-            return false;
-        }
+    else if(queryRes.rows.length >= 1){
+        return false;
     }
-};
+    }
+}
