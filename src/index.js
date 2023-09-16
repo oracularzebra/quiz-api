@@ -1,6 +1,7 @@
 const express = require("express");
 const { CreateNewUser } = require("./users/sign_up");
 const authorize_user = require('./users/sign_in').AuthorizeUser;
+const getQues = require('./questions/getQues');
 
 const app = express();
 const port = 9001;
@@ -43,6 +44,19 @@ app.post('/sign-up', (req, res)=>{
                 res.send({success:true,message:'Please login using newly created username and password'}): 
                 res.send({success:true,message:'Username already existed'});
         });
+})
+
+app.get('/questions', (req, res)=>{
+    
+    // console.log(req.headers);
+    const {category, type, difficulty, noofQues} = req.headers;
+    console.log(category, type, difficulty, noofQues)
+    getQues(category, type, difficulty,noofQues)
+    .then(result => {
+        result.length > 0 ? res.send(result)
+        : res.send(['Not found'])
+        })
+    .catch(e => console.log(e))
 })
 app.get('*', (req, res)=>{
     res.status(404).send("Page Not Exist");
