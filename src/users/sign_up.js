@@ -16,7 +16,14 @@ module.exports = {
     
     //User does not exist
     if(queryRes.rows.length == 0){
-        const res = await pool.query(`insert into users (username, password) values ('${username}', '${password}')`)
+        const res = await pool.query(`insert into users
+        (username, 
+        password, 
+        registrationdate) 
+        values ('${username}',
+        '${password}', 
+        to_timestamp(${Date.now()} / 1000.0)
+        )`)
         return [true, "Please login using newly created username and password"];
     }
     //User already exists
