@@ -6,14 +6,13 @@ const getQues = require('./questions/getQues');
 const app = express();
 const port = 9001;
 
-
 app.listen(port, ()=>{
     console.log(`Host is listening on port ${port}`);
 });
 app.get('/', (req,res)=>{
     res.send("Working... on port 9001");
 });
-app.post('/sign-in', async(req, res)=>{
+app.get('/sign-in', async(req, res)=>{
 
     const {username, password} = req.headers;
     console.log(username, password)
@@ -29,15 +28,11 @@ app.post('/sign-up', async(req, res)=>{
     res.send({sucess:result[0], message:result[1]});
 })
 
-app.get('/questions', (req, res)=>{
+app.get('/questions', async(req, res)=>{
     
     const {category, type, difficulty, noofQues} = req.headers;
-    getQues(category, type, difficulty,noofQues)
-    .then(result => {
-        result.length > 0 ? res.send(result)
-        : res.send(['Not found'])
-        })
-    .catch(e => console.log(e))
+    const result = await getQues(category, type, difficulty,noofQues)
+    res.send({success:result[0], data:result[1]});
 })
 app.get('*', (req, res)=>{
     res.status(404).send("Page Not Exist");

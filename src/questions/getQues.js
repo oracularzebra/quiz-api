@@ -8,6 +8,10 @@ async function getQues(quesCat, quesType, quesDifficulty, noOfQues=10){
         and difficulty='${quesDifficulty}'
         limit ${noOfQues};
         `);
-    return res.rows;
+    
+    console.log(res.rows.length)
+    if(res.rows.length > 0) return [true, res.rows];
+
+    return [false, res]
 }
 module.exports = getQues;
