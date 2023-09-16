@@ -5,14 +5,23 @@ module.exports = {
 
     CreateNewUser: async(username, password) => {
 
+    //Usename or password not properly formated
+    if(username == undefined 
+        || password == undefined 
+        || username.length == 0 
+        || username.includes(' ')){
+        return [false, "Please enter correct Username"];
+    }
     const queryRes = await pool.query(`select username from users where username='${username}'`)
     
+    //User does not exist
     if(queryRes.rows.length == 0){
-        const res = pool.query(`insert into users (username, password) values ('${username}', '${password}')`)
-        return true;
+        const res = await pool.query(`insert into users (username, password) values ('${username}', '${password}')`)
+        return [true, "Please login using newly created username and password"];
     }
+    //User already exists
     else if(queryRes.rows.length >= 1){
-        return false;
+        return [false, "Username already exist please try something different"];
     }
     }
 }

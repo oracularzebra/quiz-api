@@ -6,51 +6,32 @@ const getQues = require('./questions/getQues');
 const app = express();
 const port = 9001;
 
-app.get('/', (req,res)=>{
-    res.send("hello world");
-});
+
 app.listen(port, ()=>{
     console.log(`Host is listening on port ${port}`);
 });
-
+app.get('/', (req,res)=>{
+    res.send("Working... on port 9001");
+});
 app.post('/sign-in', async(req, res)=>{
 
-    if(Object.keys(req.query).length == 0 ||
-        req.query.username == undefined ||
-        req.query.password == undefined) res.status(500).send("Ha ha..");
+    const {username, password} = req.headers;
+    console.log(username, password)
+    const result = await authorize_user(username, password);
+    res.send({success:result[0],message:result[1]});
 
-    const username = req.query.username.toString().trim();
-    const pass = req.query.password.toString().trim();
-
-    if(username.length == 0 || username.includes(' ')){
-        res.send({success:true,message:"Please enter correct Username"});
-    }
-    else{
-        const result = await authorize_user(username, pass);
-        res.send({success:false,message:result[1]});
-    }
 });
 
-app.post('/sign-up', (req, res)=>{
+app.post('/sign-up', async(req, res)=>{
 
-    if(Object.keys(req.query).lenght == 0) res.send('Please enter username and password');
-    
-    const username = req.query.username.toString().trim();
-    const password = req.query.password.toString().trim();
-
-    CreateNewUser(username, password)
-        .then(result => {
-            result?
-                res.send({success:true,message:'Please login using newly created username and password'}): 
-                res.send({success:true,message:'Username already existed'});
-        });
+    const {username, password} = req.headers;
+    const result = await CreateNewUser(username, password);
+    res.send({sucess:result[0], message:result[1]});
 })
 
 app.get('/questions', (req, res)=>{
     
-    // console.log(req.headers);
     const {category, type, difficulty, noofQues} = req.headers;
-    console.log(category, type, difficulty, noofQues)
     getQues(category, type, difficulty,noofQues)
     .then(result => {
         result.length > 0 ? res.send(result)
