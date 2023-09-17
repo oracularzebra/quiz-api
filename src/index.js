@@ -2,6 +2,7 @@ const express = require("express");
 const { CreateNewUser } = require("./users/sign_up");
 const authorize_user = require('./users/sign_in').AuthorizeUser;
 const getQues = require('./questions/getQues');
+const cors = require('cors');
 
 const app = express();
 const port = 9001;
@@ -9,6 +10,11 @@ const port = 9001;
 app.listen(port, ()=>{
     console.log(`Host is listening on port ${port}`);
 });
+
+app.use(cors({
+    origin:'http://localhost:5173'
+}));
+
 app.get('/', (req,res)=>{
     res.send("Working... on port 9001");
 });

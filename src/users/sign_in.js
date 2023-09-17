@@ -3,9 +3,6 @@ const pool = require('../pg');
 
 module.exports = {
     AuthorizeUser:async(username, pass) =>{
-        
-        const res = await pool.query(`select password from users where username='${username}'`);
-        
         //Username or password not properly formatted
         if(username.length == 0 
             || username.includes(' '
@@ -13,6 +10,14 @@ module.exports = {
             || username.includes(' '))){
             return [false, "Please enter correct Username"];
         }
+        const formattedUsername = username.trim();
+        const formattedPassword = pass.trim();
+        if(formattedUsername.length == 0 
+        || formattedPassword.length == 0){
+            return [false, "Please enter correct username and password"]
+        }
+        const res = await pool.query(`select password from users where username='${formattedUsername}'`);
+        
         
         //Checking if username exists
         if(res.rowCount == 0){
@@ -23,7 +28,7 @@ module.exports = {
         //There should be no case for more than one unique
         //username
         else if(res.rowCount == 1){
-            if(res.rows[0].password == pass){
+            if(res.rows[0].password == formattedPassword){
             return [true, 'welcome '+username];
             }
             else{
