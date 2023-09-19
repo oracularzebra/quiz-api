@@ -5,7 +5,6 @@ module.exports = {
 
     CreateNewUser: async(username, password) => {
 
-    console.log("The entered username and password are",username, password)
     //Usename or password not properly formated
     if(username == undefined
         || password == undefined 

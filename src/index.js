@@ -1,8 +1,9 @@
 const express = require("express");
 const { CreateNewUser } = require("./users/sign_up");
-const authorize_user = require('./users/sign_in').AuthorizeUser;
+const { AuthorizeUser } = require('./users/sign_in');
 const getQues = require('./questions/getQues');
 const cors = require('cors');
+const { getSubCategory, getCategory } = require("./questions/getCategory");
 
 const app = express();
 const port = 9001;
@@ -22,7 +23,7 @@ app.get('/sign-in', async(req, res)=>{
 
     const {username, password} = req.headers;
     console.log(username, password)
-    const result = await authorize_user(username, password);
+    const result = await AuthorizeUser(username, password);
     res.send({success:result[0],message:result[1]});
 
 });
@@ -39,6 +40,16 @@ app.get('/questions', async(req, res)=>{
     const {category, type, difficulty, noofQues} = req.headers;
     const result = await getQues(category, type, difficulty,noofQues)
     res.send({success:result[0], data:result[1]});
+})
+app.get('/categories', async(req, res)=>{
+    if(req.headers['sub_category']){
+        const result = await getSubCategory(req.headers['sub_category']);
+        res.send({success:result[0], data:result[1]})
+    }
+    else{
+        const result = await getCategory();
+        res.send({success:result[0], data:result[1]});
+    }
 })
 app.get('*', (req, res)=>{
     res.status(404).send("Page Not Exist");

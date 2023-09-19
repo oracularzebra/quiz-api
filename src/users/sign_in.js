@@ -4,11 +4,12 @@ const pool = require('../pg');
 module.exports = {
     AuthorizeUser:async(username, pass) =>{
         //Username or password not properly formatted
-        if(username.length == 0 
-            || username.includes(' '
+        if(username == undefined 
+            || pass == undefined
+            || username.length == 0 
             || username.length == 0
-            || username.includes(' '))){
-            return [false, "Please enter correct Username"];
+            || username.includes(' ')){
+            return [false, "Please enter correct Username and password"];
         }
         const formattedUsername = username.trim();
         const formattedPassword = pass.trim();
