@@ -13,7 +13,7 @@ app.listen(port, ()=>{
 });
 
 app.use(cors({
-    origin:'http://localhost:5173'
+    origin:['http://localhost:5173']
 }));
 
 app.get('/', (req,res)=>{
@@ -37,8 +37,9 @@ app.post('/sign-up', async(req, res)=>{
 
 app.get('/questions', async(req, res)=>{
     
-    const {category, type, difficulty, noofQues} = req.headers;
-    const result = await getQues(category, type, difficulty,noofQues)
+    const {category, type, difficulty, noofques} = req.headers;
+    console.log(req.headers)
+    const result = await getQues(category, type, difficulty, noofques)
     res.send({success:result[0], data:result[1]});
 })
 app.get('/categories', async(req, res)=>{
