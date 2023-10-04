@@ -7,13 +7,22 @@ const { getSubCategory, getCategory } = require("./questions/getCategory");
 
 const app = express();
 const port = 9001;
-
+const allowedDomains = ['http://localhost:5173', 'https://quiz-webapp-typescript.pages.dev']
 app.listen(port, ()=>{
     console.log(`Host is listening on port ${port}`);
 });
 
 app.use(cors({
-    origin:['http://localhost:5173', 'https://quiz-webapp-typescript.pages.dev/']
+  origin: function (origin, callback) {
+    // bypass the requests with no origin (like curl requests, mobile apps, etc )
+    if (!origin) return callback(null, true);
+ 
+    if (allowedDomains.indexOf(origin) === -1) {
+      var msg = `This site ${origin} does not have an access. Only specific domains are allowed to access it.`;
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  }
 }));
 
 app.get('/', (req,res)=>{
