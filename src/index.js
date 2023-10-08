@@ -4,6 +4,7 @@ const { AuthorizeUser } = require('./users/sign_in');
 const getQues = require('./questions/getQues');
 const cors = require('cors');
 const { getSubCategory, getCategory } = require("./questions/getCategory");
+const getResult = require("./result/getResult");
 
 const app = express();
 const port = 9001;
@@ -47,7 +48,6 @@ app.post('/sign-up', async(req, res)=>{
 app.get('/questions', async(req, res)=>{
     
     const {category, type, difficulty, noofques} = req.headers;
-    console.log(req.headers)
     const result = await getQues(category, type, difficulty, noofques)
     res.send({success:result[0], data:result[1]});
 })
@@ -60,6 +60,12 @@ app.get('/categories', async(req, res)=>{
         const result = await getCategory();
         res.send({success:result[0], data:result[1]});
     }
+})
+app.post('/result', async(req, res)=>{
+    const {questions_id, marked_options} = req.headers;
+    console.log(questions_id, marked_options)
+    // const result = await getResult(questions_id, marked_options);
+    // res.send({success:result[0], data:result[1]})
 })
 app.get('*', (req, res)=>{
     res.status(404).send("Page Not Exist");
