@@ -63,9 +63,8 @@ app.get('/categories', async(req, res)=>{
 })
 app.post('/result', async(req, res)=>{
     const {questions_id, marked_options} = req.headers;
-    console.log(questions_id, marked_options)
-    // const result = await getResult(questions_id, marked_options);
-    // res.send({success:result[0], data:result[1]})
+    const result = await getResult(questions_id, marked_options);
+    res.send({success:result[0], data:{marks:result[1]}})
 })
 app.get('*', (req, res)=>{
     res.status(404).send("Page Not Exist");
