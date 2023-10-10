@@ -2,7 +2,9 @@ const pool = require("../pg")
 
 module.exports = {
     
-    getAttempts: async function(){
+    getAttempts: async function(
+        usename
+    ){
         pool.query()
     }
 }

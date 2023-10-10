@@ -1,5 +1,7 @@
 const pool = require("../pg");
 
+//This will return the ids of those
+//questions which are marked correctly.
 async function getResult(
     questions_id,
     marked_options
@@ -13,6 +15,7 @@ async function getResult(
     const parsed_questions_id = JSON.parse(questions_id);
     const parsed_marked_options = JSON.parse(marked_options);
     let marks = 0;
+    let correct_marked_questions_id = [];
     let index = 0;
     for (id of parsed_questions_id){
         const correct_answer_req = await pool.query(`select correct_answer from answers where id=${id};`);
@@ -21,9 +24,10 @@ async function getResult(
 
         if(correct_answer == marked_option){ 
             marks += 1;
+            correct_marked_questions_id.push(id);
         }
     }
 
-    return [true, marks];
+    return [true, marks, correct_marked_questions_id];
 }
 module.exports = getResult;

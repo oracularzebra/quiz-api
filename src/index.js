@@ -40,7 +40,8 @@ app.get('/sign-in', async(req, res)=>{
 app.post('/result', async(req, res)=>{
     const {questions_id, marked_options} = req.headers;
     const result = await getResult(questions_id, marked_options);
-    res.send({success:result[0], data:{marks:result[1]}})
+    res.send({success:result[0], data:{marks:result[1], 
+                                       correct_marked_questions_id:result[2]}})
 })
 app.post('/sign-up', async(req, res)=>{
 
@@ -48,7 +49,6 @@ app.post('/sign-up', async(req, res)=>{
     const result = await CreateNewUser(username, password);
     res.send({sucess:result[0], message:result[1]});
 })
-
 app.get('/questions', async(req, res)=>{
     
     const {category, type, difficulty, noofques} = req.headers;
