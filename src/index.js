@@ -37,7 +37,11 @@ app.get('/sign-in', async(req, res)=>{
     res.send({success:result[0],message:result[1]});
 
 });
-
+app.post('/result', async(req, res)=>{
+    const {questions_id, marked_options} = req.headers;
+    const result = await getResult(questions_id, marked_options);
+    res.send({success:result[0], data:{marks:result[1]}})
+})
 app.post('/sign-up', async(req, res)=>{
 
     const {username, password} = req.headers;
@@ -60,11 +64,6 @@ app.get('/categories', async(req, res)=>{
         const result = await getCategory();
         res.send({success:result[0], data:result[1]});
     }
-})
-app.post('/result', async(req, res)=>{
-    const {questions_id, marked_options} = req.headers;
-    const result = await getResult(questions_id, marked_options);
-    res.send({success:result[0], data:{marks:result[1]}})
 })
 app.get('*', (req, res)=>{
     res.status(404).send("Page Not Exist");
