@@ -8,7 +8,7 @@ const getResult = require("./result/getResult");
 
 const app = express();
 const port = 9001;
-const allowedDomains = ['http://localhost:5173', 'https://quiz-webapp-typescript.pages.dev']
+const allowedDomains = ['http://localhost:5173', 'https://*.quiz-webapp-typescript.pages.dev']
 app.listen(port, ()=>{
     console.log(`Host is listening on port ${port}`);
 });
