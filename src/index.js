@@ -40,7 +40,8 @@ app.post('/result',cors(), async(req, res)=>{
     const {questions_id, marked_options} = req.headers;
     const result = await getResult(questions_id, marked_options);
     res.send({success:result[0], data:{marks:result[1], 
-                                       correct_marked_questions_id:result[2]}})
+                                       correct_marked_questions_id:result[2],
+                                        correct_answers:result[3]}})
 })
 app.post('/sign-up', async(req, res)=>{
 

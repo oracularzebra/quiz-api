@@ -16,18 +16,20 @@ async function getResult(
     const parsed_marked_options = JSON.parse(marked_options);
     let marks = 0;
     let correct_marked_questions_id = [];
+    let correct_answers = [];
     let index = 0;
     for (id of parsed_questions_id){
         const correct_answer_req = await pool.query(`select correct_answer from answers where id=${id};`);
         const correct_answer = correct_answer_req.rows[0].correct_answer;
         const marked_option = parsed_marked_options[index++];
-
+        correct_answers.push(correct_answer);
         if(correct_answer == marked_option){ 
             marks += 1;
             correct_marked_questions_id.push(id);
         }
     }
 
-    return [true, marks, correct_marked_questions_id];
+    //We will also send back the correct answers
+    return [true, marks, correct_marked_questions_id, correct_answers];
 }
 module.exports = getResult;
