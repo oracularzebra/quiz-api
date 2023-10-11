@@ -25,7 +25,6 @@ app.use(cors({
     return callback(null, true);
   }
 }));
-
 app.get('/', (req,res)=>{
     res.send("Working... on port 9001");
 });
@@ -37,7 +36,7 @@ app.get('/sign-in', async(req, res)=>{
     res.send({success:result[0],message:result[1]});
 
 });
-app.post('/result', async(req, res)=>{
+app.post('/result',cors(), async(req, res)=>{
     const {questions_id, marked_options} = req.headers;
     const result = await getResult(questions_id, marked_options);
     res.send({success:result[0], data:{marks:result[1], 
