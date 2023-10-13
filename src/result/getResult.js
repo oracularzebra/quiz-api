@@ -32,7 +32,7 @@ async function getResult(
         }
     }
     //We will call setAttempts here only
-    setAttempts(questions_id, marked_options, duration, 'root')
+    setAttempts(questions_id, marked_options, duration, username, marks)
     //We will also send back the correct answers
     return [true, marks, correct_marked_questions_id, correct_answers, JSON.parse(duration)];
 }
