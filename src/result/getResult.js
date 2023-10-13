@@ -1,10 +1,13 @@
 const pool = require("../pg");
+const setAttempts = require("./setAttempts");
 
 //This will return the ids of those
 //questions which are marked correctly.
 async function getResult(
     questions_id,
-    marked_options
+    marked_options,
+    duration,
+    username
 ){
     if(questions_id == undefined ||
         marked_options == undefined) return [false, 
@@ -28,8 +31,9 @@ async function getResult(
             correct_marked_questions_id.push(id);
         }
     }
-
+    //We will call setAttempts here only
+    setAttempts(questions_id, marked_options, duration, 'root')
     //We will also send back the correct answers
-    return [true, marks, correct_marked_questions_id, correct_answers];
+    return [true, marks, correct_marked_questions_id, correct_answers, JSON.parse(duration)];
 }
 module.exports = getResult;

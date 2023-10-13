@@ -37,11 +37,12 @@ app.get('/sign-in', async(req, res)=>{
 
 });
 app.post('/result',cors(), async(req, res)=>{
-    const {questions_id, marked_options} = req.headers;
-    const result = await getResult(questions_id, marked_options);
+    const {questions_id, marked_options, duration, username} = req.headers;
+    const result = await getResult(questions_id, marked_options, duration, username);
     res.send({success:result[0], data:{marks:result[1], 
                                        correct_marked_questions_id:result[2],
-                                        correct_answers:result[3]}})
+                                        correct_answers:result[3],
+                                        duration: result[4]}})
 })
 app.post('/sign-up', async(req, res)=>{
 
