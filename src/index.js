@@ -42,7 +42,8 @@ app.post('/result',cors(), async(req, res)=>{
     res.send({success:result[0], data:{marks:result[1], 
                                        correct_marked_questions_id:result[2],
                                         correct_answers:result[3],
-                                        duration: result[4]}})
+                                        duration: result[4],
+                                        questions: result[5]}})
 })
 app.post('/sign-up', async(req, res)=>{
 

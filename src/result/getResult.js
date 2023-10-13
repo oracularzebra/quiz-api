@@ -20,6 +20,7 @@ async function getResult(
     let marks = 0;
     let correct_marked_questions_id = [];
     let correct_answers = [];
+    const questions = [];
     let index = 0;
     for (id of parsed_questions_id){
         const correct_answer_req = await pool.query(`select correct_answer from answers where id=${id};`);
@@ -30,10 +31,15 @@ async function getResult(
             marks += 1;
             correct_marked_questions_id.push(id);
         }
+        const res = await pool.query(`select id,question,options from questions 
+        where id=${id}
+        `);
+        questions.push(res.rows[0]);
+        console.log(res.rows[0]);
     }
     //We will call setAttempts here only
     setAttempts(questions_id, marked_options, duration, username, marks)
     //We will also send back the correct answers
-    return [true, marks, correct_marked_questions_id, correct_answers, JSON.parse(duration)];
+    return [true, marks, correct_marked_questions_id, correct_answers, JSON.parse(duration), {success:true, data:questions}];
 }
 module.exports = getResult;
