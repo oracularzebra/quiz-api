@@ -2,16 +2,23 @@ const pool = require("../pg");
 
 async function getQues(quesCat, quesType, quesDifficulty, noOfQues=10){
     
-    const res = await pool.query(`select id,question,options from questions 
+    let questions = [];
+    let fetched_ids = [];
+    for(let i=0;i<noOfQues;){
+        const res = await pool.query(`select id,question,options from questions 
         where sub_category='${quesCat}' 
         and type='${quesType}'
         and difficulty='${quesDifficulty}'
         order by random()
-        limit ${noOfQues};
+        limit 1;
         `);
-    
-    console.log(res.rows.length)
-    if(res.rows.length > 0) return [true, res.rows];
+        if(!fetched_ids.includes(res.rows[0].id)){
+           fetched_ids.push(res.rows[0].id);
+           questions.push(...res.rows);
+           i++;
+        }
+    }
+    if(res.rows.length > 0) return [true, questions];
 
     return [false, []]
 }
