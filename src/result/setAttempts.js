@@ -6,6 +6,8 @@ const pool = require("../pg")
     duration,
     username,
     marks,
+    category,
+    difficulty
 ){
     // console.log(questions_id)
     // console.log(marked_options)
@@ -37,14 +39,18 @@ const pool = require("../pg")
         duration,
         questions_id,
         marked_answers,
-        marks
+        marks,
+        category,
+        difficulty
     ) values (
         '${username}',
         '${ISTTime}',
         '${parsed_duration}',
         ${parsed_questions_id},
         ${parsed_marked_options},
-        '${marks}'
+        '${marks}',
+        '${category}',
+        '${difficulty}'
     )`)
     
 }

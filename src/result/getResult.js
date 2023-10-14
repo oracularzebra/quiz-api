@@ -7,7 +7,9 @@ async function getResult(
     questions_id,
     marked_options,
     duration,
-    username
+    username,
+    category,
+    difficulty
 ){
     if(questions_id == undefined ||
         marked_options == undefined) return [false, 
@@ -38,8 +40,8 @@ async function getResult(
         console.log(res.rows[0]);
     }
     //We will call setAttempts here only
-    setAttempts(questions_id, marked_options, duration, username, marks)
+    setAttempts(questions_id, marked_options, duration, username, marks, category, difficulty)
     //We will also send back the correct answers
-    return [true, marks, correct_marked_questions_id, correct_answers, JSON.parse(duration), {success:true, data:questions}];
+    return [true, marks, correct_marked_questions_id, correct_answers, JSON.parse(duration), {success:true, data:questions}, category, difficulty];
 }
 module.exports = getResult;
