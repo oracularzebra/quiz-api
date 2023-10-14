@@ -18,7 +18,7 @@ async function getQues(quesCat, quesType, quesDifficulty, noOfQues=10){
            i++;
         }
     }
-    if(res.rows.length > 0) return [true, questions];
+    if(questions.length > 0) return [true, questions];
 
     return [false, []]
 }
