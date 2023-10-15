@@ -38,7 +38,7 @@ const pool = require("../pg")
         attempt_date,
         duration,
         questions_id,
-        marked_answers,
+        marked_options,
         marks,
         category,
         difficulty

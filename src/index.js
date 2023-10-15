@@ -5,6 +5,8 @@ const getQues = require('./questions/getQues');
 const cors = require('cors');
 const { getSubCategory, getCategory } = require("./questions/getCategory");
 const getResult = require("./result/getResult");
+const getAttempts = require("./result/getAttempts");
+const getAttempt = require("./result/getAttempt");
 
 const app = express();
 const port = 9001;
@@ -68,6 +70,25 @@ app.get('/categories', async(req, res)=>{
         const result = await getCategory();
         res.send({success:result[0], data:result[1]});
     }
+})
+app.get('/getAttempts', async(req, res)=>{
+        const username = req.headers['username']
+        const result = await getAttempts(username);
+        res.send({success: result[0], data:result[1]});
+})
+// app.get('getAttempt', async(req, res)=>{
+//     const username = req.headers['username']
+// })
+app.post('/getAttempt',cors(), async(req, res)=>{
+    const {questions_id, marked_options, duration, username, category, difficulty} = req.headers;
+    const result = await getAttempt(questions_id, marked_options, duration, username, category, difficulty);
+    res.send({success:result[0], data:{marks:result[1], 
+                                       correct_marked_questions_id:result[2],
+                                        correct_answers:result[3],
+                                        duration: result[4],
+                                        questions: result[5],
+                                        category: result[6],
+                                        difficulty: result[7]}})
 })
 app.get('*', (req, res)=>{
     res.status(404).send("Page Not Exist");
