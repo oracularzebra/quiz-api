@@ -80,8 +80,8 @@ app.get('/getAttempts', async(req, res)=>{
 //     const username = req.headers['username']
 // })
 app.post('/getAttempt',cors(), async(req, res)=>{
-    const {questions_id, marked_options, duration, username, category, difficulty} = req.headers;
-    const result = await getAttempt(questions_id, marked_options, duration, username, category, difficulty);
+    const {questions_id, marked_options, duration, category, difficulty} = req.headers;
+    const result = await getAttempt(questions_id, marked_options, duration, category, difficulty);
     res.send({success:result[0], data:{marks:result[1], 
                                        correct_marked_questions_id:result[2],
                                         correct_answers:result[3],
