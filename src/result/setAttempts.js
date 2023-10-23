@@ -9,11 +9,6 @@ const pool = require("../pg")
     category,
     difficulty
 ){
-    // console.log(questions_id)
-    // console.log(marked_options)
-    // console.log(duration)
-    // console.log(username)
-
     const parsed_questions_id = JSON.stringify(questions_id)
     .replace('[', '\'{')
     .replace(']', '}\'')
