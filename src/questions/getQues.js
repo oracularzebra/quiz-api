@@ -13,7 +13,7 @@ async function getQues(quesCat, quesType, quesDifficulty, noOfQues=10){
         order by random()
         limit 1;
         `);
-        if(!fetched_ids.includes(res.rows[0].id)){
+        if(!fetched_ids !== null && !fetched_ids.includes(res.rows[0].id)){
            fetched_ids.push(res.rows[0].id);
            questions.push(...res.rows);
            i++;
