@@ -7,6 +7,7 @@ const { getSubCategory, getCategory } = require("./questions/getCategory");
 const getResult = require("./result/getResult");
 const getAttempts = require("./result/getAttempts");
 const getAttempt = require("./result/getAttempt");
+const getLeaders = require("./result/getLeaders");
 
 const app = express();
 const port = 9001;
@@ -97,6 +98,11 @@ app.post('/getAttempt', cors(), async (req, res) => {
       difficulty: result[7]
     }
   })
+})
+app.get('/getLeaders', async(req, res)=>{
+  const {category, difficulty} = req.headers;
+  const result = await getLeaders(category, difficulty);
+  res.send({success: result[0], data:result[1]});
 })
 app.get('*', (req, res) => {
   res.status(404).send("Page Not Exist");
