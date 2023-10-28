@@ -33,10 +33,15 @@ async function getLeaders(category, difficulty){
     return {username: res.username,
             marks: res.marks,
             duration: duration_obj,
-            combined_score: res.marks - (total_duration_in_sec/50)}
+            combined_score: res.marks - (total_duration_in_sec/scale_factor)}
   })
-  console.log(newRes);
-  if(result.rowCount > 0) return [true, result.rows]
+  let compare = (a,b)=>{
+    if(a.combined_score <= b.combined_score) return -1;
+    if(a.combined_score > b.combined_score) return 0;
+  }
+  const sortedRes = newRes.sort(compare).reverse();
+  console.log(sortedRes);
+  if(result.rowCount > 0) return [true, sortedRes]
   else return [false, []];
 }
 module.exports = getLeaders;
