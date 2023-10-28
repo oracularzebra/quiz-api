@@ -35,8 +35,13 @@ async function getAttempt(
         `);
         questions.push(res.rows[0]);
     }
+
+    const parsed_duration = JSON.parse(duration);
+    const formatted_parsed_duration = parsed_duration.slice(1, parsed_duration.length-1); 
+    // console.log(JSON.parse(duration).slice(1, duration.length-1));
+    // console.log(JSON.parse(duration).slice(1, duration.length-1));
     //We will call setAttempts here only
     //We will also send back the correct answers
-    return [true, marks, correct_marked_questions_id, correct_answers, JSON.parse(duration), {success:true, data:questions}, category, difficulty];
+    return [true, marks, correct_marked_questions_id, correct_answers, JSON.parse(formatted_parsed_duration), {success:true, data:questions}, category, difficulty];
 }
 module.exports = getAttempt;
