@@ -15,8 +15,6 @@ async function getLeaders(category, difficulty){
   //who completed the test quickly but with lower marks
   //to have a higher combined score.
   const scale_factor = 50; 
-  const username_marks = new Map();
-  console.log(category, difficulty)
   const result = await pool.query(`
     select
     distinct (username),
@@ -40,7 +38,6 @@ async function getLeaders(category, difficulty){
     if(a.combined_score > b.combined_score) return 0;
   }
   const sortedRes = newRes.sort(compare).reverse();
-  console.log(sortedRes);
   if(result.rowCount > 0) return [true, sortedRes]
   else return [false, []];
 }
