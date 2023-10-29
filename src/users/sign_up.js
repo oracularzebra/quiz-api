@@ -19,6 +19,12 @@ module.exports = {
         || formattedPassword.length == 0){
             return [false, "Please enter correct username and password"]
     }
+    if(formattedPassword < 3 || formattedPassword.length > 10){
+      return [false, "Password should be between 3 to 10 charactes long"]
+    }
+    if(formattedUsername < 3 || formattedUsername.length > 10){
+      return [false, "Username should be between 3 to 10 charactes long"]
+    }
     const queryRes = await pool.query(`select username from users where username='${username}'`)
     
     //User does not exist
