@@ -17,7 +17,12 @@ module.exports = {
         || formattedPassword.length == 0){
             return [false, "Please enter correct username and password"]
         }
-        const res = await pool.query(`select password from users where username='${formattedUsername}'`);
+        try{
+          const res = await pool.query(`select password from users where username='${formattedUsername}'`);
+        }
+        catch(err){
+          return [false, 'Ha ha ha ! gotch ya !']
+        }
         
         
         //Checking if username exists
