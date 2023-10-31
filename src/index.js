@@ -9,6 +9,7 @@ const getAttempts = require("./result/getAttempts");
 const getAttempt = require("./result/getAttempt");
 const getLeaders = require("./result/getLeaders");
 const AdminSignIn = require("./admin/signIn");
+const perks = require("./admin/perks");
 
 const app = express();
 const port = 9001;
@@ -109,6 +110,10 @@ app.get('/admin/sign-in', async(req, res)=>{
   const {username, password} = req.headers;
   const result = await AdminSignIn(username, password)
   res.send({success: result[0], message: result[1]});
+})
+app.get('/admin/get-users', async(req, res)=>{
+  const result = await perks.getNoOfUsers();
+  res.send({success:result[0], data:result[1]})
 })
 app.get('*', (req, res) => {
   res.status(404).send("Page Not Exist");
