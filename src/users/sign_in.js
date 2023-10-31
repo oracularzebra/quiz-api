@@ -19,30 +19,31 @@ module.exports = {
         }
         try{
           const res = await pool.query(`select password from users where username='${formattedUsername}'`);
+          //Checking if username exists
+          if(res.rowCount == 0){
+              return [false, "username does not exist"];
+          }
+
+          //Checking if password is correct
+          //There should be no case for more than one unique
+          //username
+          else if(res.rowCount == 1){
+              if(res.rows[0].password == formattedPassword){
+              return [true, 'welcome '+username];
+              }
+              else{
+                  return [false, 'wrong password']
+              }
+          }
+        else {
+              return [false, 'Please enter correct username or password'];
+          }
         }
         catch(err){
           return [false, 'Ha ha ha ! gotch ya !']
         }
         
         
-        //Checking if username exists
-        if(res.rowCount == 0){
-            return [false, "username does not exist"];
-        }
-
-        //Checking if password is correct
-        //There should be no case for more than one unique
-        //username
-        else if(res.rowCount == 1){
-            if(res.rows[0].password == formattedPassword){
-            return [true, 'welcome '+username];
-            }
-            else{
-                return [false, 'wrong password']
-            }
-        }
-       else {
-            return [false, 'Please enter correct username or password'];
-        }
+        
     }
 }
