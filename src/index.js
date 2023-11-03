@@ -115,6 +115,10 @@ app.get('/admin/get-users', async(req, res)=>{
   const result = await perks.getNoOfUsers();
   res.send({success:result[0], data:result[1]})
 })
+app.get('/admin/add-question', async(req, res)=>{
+  const {question, options} = req.headers;
+  const result = await perks.addQuesAndOptions(question, options)
+})
 app.get('*', (req, res) => {
   res.status(404).send("Page Not Exist");
 })
