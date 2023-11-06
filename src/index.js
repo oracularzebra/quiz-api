@@ -60,7 +60,7 @@ app.post('/sign-up', async (req, res) => {
 
   const { username, password } = req.headers;
   const result = await CreateNewUser(username, password);
-  res.send({ sucess: result[0], message: result[1] });
+  res.send({ success: result[0], message: result[1] });
 })
 app.get('/questions', async (req, res) => {
 
